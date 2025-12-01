@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -17,11 +18,11 @@ import (
 // )
 type postgres_config struct {
 	Database struct {
-		Host          string `json:"host"`
-		Port          string `json:"port"`
-		AdminUsername string `json:"admin_username"`
-		Adminpassword string `json:"admin_password"`
-		Dbname        string `json:"dbname"`
+		Host     string `json:"host"`
+		Port     string `json:"port"`
+		Username string `json:"admin_username"`
+		Password string `json:"admin_password"`
+		Dbname   string `json:"dbname"`
 	} `json:"database"`
 }
 
@@ -41,7 +42,6 @@ func main() {
 	// fmt.Println("Host", postgres_cfg.Database.Host)
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
-		postgres_cfg.Database.host, postgres_cfg.Database.port, postgres_cfg.Database.user, postgres_cfg.Database.password, postgres_cfg.Database.Dbname)
+		postgres_cfg.Database.Host, postgres_cfg.Database.Port, postgres_cfg.Database.Username, postgres_cfg.Database.Password, postgres_cfg.Database.Dbname)
 	sql.Open("postgres", psqlInfo)
-
 }
