@@ -21,6 +21,7 @@ type postgres_config struct {
 		Port          string `json:"port"`
 		AdminUsername string `json:"admin_username"`
 		Adminpassword string `json:"admin_password"`
+		Dbname        string `json:"dbname"`
 	} `json:"database"`
 }
 
@@ -35,7 +36,12 @@ func main() {
 	if err := decoder.Decode(&postgres_cfg); err != nil {
 		panic(err)
 	}
-	fmt.Println("successfully read JSON")
-	fmt.Println("Host", postgres_cfg.Database.Host)
+
+	// fmt.Println("successfully read JSON")
+	// fmt.Println("Host", postgres_cfg.Database.Host)
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		postgres_cfg.Database.host, postgres_cfg.Database.port, postgres_cfg.Database.user, postgres_cfg.Database.password, postgres_cfg.Database.Dbname)
+	sql.Open("postgres", psqlInfo)
 
 }
