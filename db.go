@@ -4,10 +4,13 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"os"
 )
 
 // import (
+//
+// "github.com/lib/pq"
 //
 //	"context"
 //	"encoding/json"
@@ -40,8 +43,24 @@ func main() {
 
 	// fmt.Println("successfully read JSON")
 	// fmt.Println("Host", postgres_cfg.Database.Host)
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		postgres_cfg.Database.Host, postgres_cfg.Database.Port, postgres_cfg.Database.Username, postgres_cfg.Database.Password, postgres_cfg.Database.Dbname)
-	sql.Open("postgres", psqlInfo)
+	//  "postgres://%s"//
+	//  urlExample := "postgres://username:password@localhost:5432/database_name"
+	psqlInfo := fmt.Sprintf("postgres://%s:@%s:%s/%s",
+		postgres_cfg.Database.Username, postgres_cfg.Database.Host, postgres_cfg.Database.Port, postgres_cfg.Database.Dbname)
+
+	fmt.Println(psqlInfo)
+	db, err := sql.Open("pgx", psqlInfo)
+	db.Ping()
+	if err != nil {
+		panic(err)
+	}
+
+	query := "SELECT * FROM metrics"
+
+	test, err := db.Query(query)
+	if err != nil {
+		panic(err)
+	}
+	defer test.Close()
+	//	test_fin, err := test.LastInsertId()
 }
