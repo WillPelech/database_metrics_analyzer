@@ -6,3 +6,4 @@
 
 #ignore specific file
 postgres_config.json
+.env

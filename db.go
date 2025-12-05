@@ -8,17 +8,6 @@ import (
 	"os"
 )
 
-// import (
-//
-// "github.com/lib/pq"
-//
-//	"context"
-//	"encoding/json"
-//	"fmt"
-//	"github.com/jackc/pgx/v5"
-//	"log"
-//
-// )
 type postgres_config struct {
 	Database struct {
 		Host     string `json:"host"`
@@ -61,6 +50,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	defer test.Close()
-	//	test_fin, err := test.LastInsertId()
 }
